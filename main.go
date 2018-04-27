@@ -32,17 +32,13 @@ func Init(config string) BusRabbitMQ {
 	return Bus
 }
 func (bus *BusRabbitMQ) Consumer(exchangeName string, routingKeys []string, callback func([] byte)) {
-
-	fmt.Println(bus)
 	conn, err := amqp.Dial(bus.Config.StringConnection()) //создаем подключение
 	failOnError(err, "Failed connection to RabbitMQ")
 	defer conn.Close()
 
-	fmt.Println("tyty2")
 	ch, err := conn.Channel() //создаем канал
 	failOnError(err, "Failed to open a channel")
 	defer ch.Close()
-	fmt.Println("tyty")
 	ch.ExchangeDeclare( //создаем точку доступа
 		exchangeName,
 		"direct",
